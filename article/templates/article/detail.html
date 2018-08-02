@@ -1,1 +1,7 @@
-{{articles}}
+
+<h1>{{article.title}}</h1>
+<ul>
+    {%for comment in article.comment_set.all%}
+    <li>{{comment.comment_text}}-{{comment.comment_author}}</li>
+    {%endfor%}
+</ul>
