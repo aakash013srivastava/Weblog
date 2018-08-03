@@ -16,7 +16,7 @@
     </ul>
 
     <h3>Post a Comment</h3>
-    <form action="{%url 'article:post_comment' article.id%}" method="POST">
+    <form action="" method="POST">
         {%csrf_token%}
         {{comment_form}}
         <input type="submit" value="Submit">

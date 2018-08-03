@@ -1,6 +1,7 @@
 from django.urls import path
 from django.conf.urls import url
 from . import views
+from django.contrib.auth import views as auth_views
 
 app_name = 'article'
 
@@ -13,4 +14,6 @@ urlpatterns = [
     url(r'^new/$',views.new,name='new'),
     url(r'^create/$',views.create,name='create'),
     url(r'^post_comment/(?P<article_id>[0-9]+)/$',views.post_comment,name='post_comment'),
+    url(r'^signup/$',views.signup,name='signup'),
+    url(r'^login/$',views.login,{'template_name':'article/login.html'}),
 ]

@@ -1,6 +1,10 @@
 from .models import Article,Comment
-from django.shortcuts import render,get_object_or_404
+from django.shortcuts import render,get_object_or_404,redirect
 from .forms import ArticleForm,CommentForm
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate,login
+
+
 
 def index(request):
     articles = Article.objects.all()
@@ -46,4 +50,20 @@ def post_comment(request,article_id):
         comment_form = CommentForm()
 
     return render(request,'article/detail.html',{'comment_form':comment_form})
+
+def signup(request):
+    if request.method =="POST":
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data['username']
+            raw_password = form.cleaned_data['password1']
+            #user = authenticate(username=username,password=raw_password)
+            #login(request,user)
+            #return redirect('article/login')
+            return render(request,'article/login.html')
+    else:
+        form = UserCreationForm()
+
+    return render(request,'article/signup.html',{'form':form})
 
