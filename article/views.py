@@ -1,6 +1,6 @@
 from .models import Article,Comment
 from django.shortcuts import render,get_object_or_404,redirect
-from .forms import ArticleForm,CommentForm
+from .forms import ArticleForm,CommentForm,LoginForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate,login
 
@@ -13,6 +13,19 @@ def index(request):
 def detail(request,article_id):
     article = get_object_or_404(Article,pk=article_id)
     comment_form = CommentForm()
+
+    if request.method == 'POST':
+        comment_form = CommentForm(request.POST)
+        if comment_form.is_valid():
+            comment_text = comment_form.cleaned_data['comment_text']
+            comment = Comment()
+            comment.comment_text = comment_text
+            comment.comment_author = request.user.username
+            comment.article = Article.objects.get(pk=article_id)
+            comment.save()
+    else:
+        comment_form = CommentForm()
+
     return render(request,'article/detail.html',{'article':article,'comment_form':comment_form})
 
 def new(request):
@@ -36,34 +49,30 @@ def create(request):
         form = ArticleForm()
         return render(request,'article/new.html',{'form':form})
 
-def post_comment(request,article_id):
-    if request.method == 'POST':
-        comment_form = CommentForm(request.POST)
-        if comment_form.is_valid():
-            comment_text = comment_form.cleaned_data['comment_text']
-            comment = Comment()
-            comment.comment_text = comment_text
-            comment.comment_author = "Aakash"
-            comment.article = Article.objects.get(pk=article_id)
-            comment.save()
-    else:
-        comment_form = CommentForm()
-
-    return render(request,'article/detail.html',{'comment_form':comment_form})
 
 def signup(request):
     if request.method =="POST":
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data['username']
-            raw_password = form.cleaned_data['password1']
-            #user = authenticate(username=username,password=raw_password)
-            #login(request,user)
-            #return redirect('article/login')
-            return render(request,'article/login.html')
+            form = LoginForm()
+            return render(request,'article/login.html',{'form':form})
     else:
         form = UserCreationForm()
 
     return render(request,'article/signup.html',{'form':form})
 
+def user_login(request):
+    if request.method == "POST":
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            raw_password = form.cleaned_data['password']
+            user = authenticate(username=username,password=raw_password)
+            login(request,user)
+            article = Article.objects.all()
+            return render(request,'article/index.html',{'articles':article})
+    else:
+        form = LoginForm()
+
+    return render(request,'article/login.html',{'form':form})

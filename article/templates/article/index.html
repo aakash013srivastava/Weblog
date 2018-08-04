@@ -1,11 +1,15 @@
 {%extends 'article/base.html'%}
 {%block title%}Articles{%endblock%}
-{%block body%}
 
+{%block login%}{%if request.user.username%}Login{%else%}Signup{%endif%}{%endblock%}
+
+
+
+{%block body%}
     {%if articles%}
         <ul>
             {%for article in articles %}
-            <li><a href="{% url 'article:detail' article.id %}">{{article.title}}</a></li>
+            <li><a href="{% url 'article:detail' article.id %}">{{article.title}} </a></li>
             {%endfor%}
         </ul>
     {%else%}

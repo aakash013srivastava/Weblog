@@ -2,6 +2,8 @@
 
 {%block title%}New Article{%endblock%}
 
+{%block login%}{%if request.user.username%}Login{%else%}Signup{%endif%}{%endblock%}
+
 {%block body%}
     <h1>New Article</h1>
 

@@ -6,5 +6,7 @@ class ArticleForm(forms.Form):
 
 class CommentForm(forms.Form):
     comment_text = forms.CharField(label = "Enter",max_length=10000)
-    comment_article = forms.HiddenInput()
 
+class LoginForm(forms.Form):
+    username = forms.CharField(required=True,max_length=100)
+    password = forms.CharField(required=True,widget=forms.PasswordInput)
