@@ -1,7 +1,7 @@
 from django.urls import path
 from django.conf.urls import url
 from . import views
-from django.contrib.auth import views as auth_views
+
 
 app_name = 'article'
 
@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^create/$',views.create,name='create'),
     url(r'^signup/$',views.signup,name='signup'),
     url(r'^login/$',views.user_login,name ='user_login'),
+    url(r'^logout/$',views.user_logout,name ='user_logout'),
 ]

@@ -50,6 +50,7 @@
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add Article
                     </a>
                 </li>
+                {%block login%}
                 <li class="">
                     <a href="{%url 'article:signup'%}">
                         <span  aria-hidden="true"></span>&nbsp;Signup
@@ -61,8 +62,8 @@
                     <a href="{%url 'article:user_login'%}">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;Login
                     </a>
-
                 </li>
+                {%endblock%}
             </ul>
 
         </div>
